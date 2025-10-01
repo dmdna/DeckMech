@@ -8,6 +8,7 @@ public class ArmorPhaseManager : MonoBehaviour
     public DeckManager deckManager;
     public TurnManager turnManager;
     public UIManager uiManager;
+    public FightPhaseManager fightManager;
 
     [Header("UI References")]
     public Transform drawPanel;
@@ -180,7 +181,7 @@ public class ArmorPhaseManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"✅ Player {playerId} built Robot! HP:{robot.hp} | T:{robot.thermal} | F:{robot.freeze} | E:{robot.electric} | V:{robot.voidRes} | I:{robot.impact}");
+        Debug.Log($"Player {playerId} built Robot! HP:{robot.hp} | T:{robot.thermal} | F:{robot.freeze} | E:{robot.electric} | V:{robot.voidRes} | I:{robot.impact}");
 
         GameManager.Instance.SaveRobot(robot);
         turnManager.MarkPlayerDone(playerId);
@@ -189,7 +190,8 @@ public class ArmorPhaseManager : MonoBehaviour
 
         if (turnManager.BothPlayersDone())
         {
-            Debug.Log("⚔ Both robots ready → switch to Fight Phase!");
+            Debug.Log("Both robots ready, switch to Fight Phase!");
+            fightManager.EnterFightPhase();
             uiManager.ShowFightPhase();
         }
         else
