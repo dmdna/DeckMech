@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      mecha_hangar_bg_0: 259781408470514354
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
