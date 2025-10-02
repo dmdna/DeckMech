@@ -32,7 +32,7 @@ Players will decide who is Player 1 and who is Player 2. Starting with Player 1,
 
 1. Draw 3 cards from the shuffled Armor Deck.  
 2. Select one of the 3 cards to add to the Assembly Pile. Place the other cards in a discard deck. This goes until the Assembly Pile has at least one of each of the 4 armor piece types (one helmet, one chestplate, one set of gauntlets, one set of greaves). If the armor piece deck is depleted, the discard pile may be shuffled and used as the new deck.  
-3. As soon as the 4th missing piece is added, the player who added it must build their full armor from the pieces in the Assembly Pile. If there is more than one card for a single type of armor (e.g. two different helmets), the player may choose which piece they want.  
+3. As soon as the 4th missing piece is added, the player who added it must build their full armor from the pieces in the Assembly Pile. If there is more than one card for a single type of armor (e.g. two different helmets), the player may choose which piece they want. Note that this may include armor pieces that their opponent may have placed, creating an opportunity to mess with their plans.  
 4. When the first player has finalized their armor construction, the second player will continue the Draw-3-Pick-1 pattern to finish creating their own armor.  
 5. When both Armors are created, all the player’s stats from their armor pieces will be combined to get a final readout of each player’s HP and resistances for all types.
 
@@ -45,7 +45,7 @@ The player who ends up with the lower HP stat will go first.
 3. When a player is hit with a **Finishing Blow** (meaning the attack they are bout receive will fully deplete their HP), they will have the chance to nullify the attack in one **Last Stand**. To do this, they must draw 1 attack card. The card that they choose can nullify the finishing blow *if and only if* one of two conditions is met:
 
 - Parry Condition: The last stand attack is of the *same type* and is *stronger or equal* to the finishing blow. The attacks will cancel each other before reaching either player.
-- Abort: The last stand attack *is itself enough to be a finishing blow to the other player* (meaning that its attack power minus the other player's corresponding resistance is stil enough to destroy them). Both players will abort their attacks since one must survive.
+- Abort Condition: The last stand attack *is itself enough to be a finishing blow to the other player* (meaning that its attack power minus the other player's corresponding resistance is stil enough to destroy them). Both players will abort their attacks since one must survive.
 
 If a final blow is parried or aborted, the game continues with the player who survived their final blow drawing 2 Attack Cards.
 
