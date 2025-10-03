@@ -1,28 +1,48 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 public class FightPhaseManager : MonoBehaviour
 {
     [Header("UI")]
-    public GameObject fightPhaseUI;            // Root panel to enable
-    public TMP_Text announcementText;          // "Both robots ready... switching..." text
-    public PlayerRobotPanel player1Panel;      // assign Player1Panel (PlayerRobotPanel component)
-    public PlayerRobotPanel player2Panel;      // assign Player2Panel
+    public GameObject fightPhaseUI;            
+    public Transform announcementTextContainer;          
+    public GameObject announcementTextPrefab;     
+    public PlayerRobotPanel player1Panel;      
+    public PlayerRobotPanel player2Panel;      
 
-    [Header("Timing")]
-    public float announcementDuration = 2.0f;  // seconds to show announcement before enabling fight controls
+    [Header("Fight UI")]
+    public Button drawAttacksButton;           
+    public Transform drawnCardsPanel;         
+    public GameObject attackCardUIPrefab;      
+
+
+    // runtime
+    private DeckManager deckManager;
+    private PlayerRobot attacker;
+    private PlayerRobot defender;
+    private int attackerId;                    // 1 or 2
+    private List<GameObject> currentAttackUIs = new List<GameObject>();
 
     void Start()
     {
-        // ensure hidden at start (optional)
+        deckManager = FindObjectOfType<DeckManager>();
         if (fightPhaseUI != null) fightPhaseUI.SetActive(false);
+
+        // ensure draw button hooked
+        if (drawAttacksButton != null)
+        {
+            drawAttacksButton.onClick.RemoveAllListeners();
+            drawAttacksButton.onClick.AddListener(DrawTwoAttacks);
+        }
     }
 
-    // Call this to enter fight phase (e.g., from ArmorPhaseManager)
+    // Called by ArmorPhaseManager when both robots ready; shows announcement then populates panels
     public void EnterFightPhase()
     {
-        // Populate panels with robots from GameManager
         var p1 = GameManager.Instance.player1Robot;
         var p2 = GameManager.Instance.player2Robot;
 
@@ -31,37 +51,269 @@ public class FightPhaseManager : MonoBehaviour
             Debug.LogWarning("FightPhaseManager: one or both robots are null when entering fight phase.");
         }
 
-        // update UI text immediately (we'll show announcement first)
+        // populate panels
         player1Panel.Setup(1, p1);
         player2Panel.Setup(2, p2);
 
-        // show announcement and then enable fight UI
-        StartCoroutine(ShowAnnouncementAndActivate());
+        // show announcement then init the fight turn order
+        ShowAnnouncementAndStartFight();
     }
 
-    IEnumerator ShowAnnouncementAndActivate()
+    void ShowAnnouncementAndStartFight()
     {
-        // show panel but maybe hide content until announcement finishes (optional)
         fightPhaseUI.SetActive(true);
+        announcementTextContainer.gameObject.SetActive(true);
 
-        // display announcement
-        announcementText.text = "Both robots ready � entering Fight Phase!";
-        announcementText.gameObject.SetActive(true);
+        // decide who starts (lowest HP starts)
+        var p1 = GameManager.Instance.player1Robot;
+        var p2 = GameManager.Instance.player2Robot;
 
-        // wait a bit
-        yield return new WaitForSeconds(announcementDuration);
+        if (p1.hp <= p2.hp)
+        {
+            attacker = p1; defender = p2; attackerId = 1;
+        }
+        else
+        {
+            attacker = p2; defender = p1; attackerId = 2;
+        }
+        StartCoroutine(AnnounceText($"Player {attackerId} (lowest HP) starts as attacker. Please draw your attack card."));
 
-        // hide announcement after delay (or leave it, choose what UX you want)
-        announcementText.gameObject.SetActive(false);
+        drawAttacksButton.interactable = true;
 
-        // Now: you can enable fight controls here (if separated). For now panels are populated and visible.
-        // If you have other fight phase initialization, call it here.
-        OnFightPhaseReady();
+        // enable draw button for the attacker
+        UpdateUIForTurn();
     }
 
-    void OnFightPhaseReady()
+    IEnumerator AnnounceText(string txt)
     {
-        // placeholder for further fight phase setup (turn order, draw first attack, etc.)
-        Debug.Log("FightPhaseManager: Fight Phase is ready.");
+        TMP_Text announcement =  Instantiate(announcementTextPrefab, announcementTextContainer).GetComponent<TMP_Text>();
+        announcement.text = txt;
+        Debug.Log(txt);
+        yield return new WaitForSeconds(8);
+        Destroy(announcement.gameObject);
+        yield return null;
+    }
+
+    void UpdateUIForTurn()
+    {
+        // refresh panels (hp may have changed)
+        player1Panel.Setup(1, GameManager.Instance.player1Robot);
+        player2Panel.Setup(2, GameManager.Instance.player2Robot);
+
+        // enable draw only for attacker
+        drawAttacksButton.interactable = true;
+        ClearCurrentAttackUIs();
+    }
+
+    // Player action: draw 2 attack card options
+    public void DrawTwoAttacks()
+    {
+        drawAttacksButton.interactable = false; // lock until player chooses
+        ClearCurrentAttackUIs();
+
+        for (int i = 0; i < 2; i++)
+        {
+            CardData attack = deckManager.DrawAttackCard();
+            if (attack == null)
+            {
+                StartCoroutine(AnnounceText($"Attack deck empty when drawing."));
+                continue;
+            }
+
+            GameObject cardUI = Instantiate(attackCardUIPrefab, drawnCardsPanel);
+            cardUI.GetComponent<CardUI>().Setup(attack);
+
+            CardHolder holder = cardUI.GetComponent<CardHolder>();
+            holder.cardData = attack;
+
+            // Make button choose this attack
+            Button btn = cardUI.GetComponent<Button>();
+            btn.onClick.RemoveAllListeners();
+            btn.onClick.AddListener(() => OnChooseAttack(holder));
+
+            currentAttackUIs.Add(cardUI);
+        }
+    }
+
+    // Attacker chose an attack option
+    void OnChooseAttack(CardHolder chosenHolder)
+    {
+        CardData attackCard = chosenHolder.cardData;
+        // Discard the *unused* option(s)
+        foreach (var ui in currentAttackUIs)
+        {
+            CardHolder h = ui.GetComponent<CardHolder>();
+            if (h != chosenHolder)
+            {
+                deckManager.DiscardAttack(h.cardData);
+                Destroy(ui);
+            }
+        }
+        currentAttackUIs.Clear();
+
+        // Apply attack to defender (with last-stand check)
+        ApplyAttackWithLastStand(attackCard);
+        // After resolution, discard the used attack card as well (if not used in last-stand)
+        deckManager.DiscardAttack(attackCard);
+    }
+
+    void ApplyAttackWithLastStand(CardData attackCard)
+    {
+        // compute defender's resistance for this attack type
+        int defenderRes = GetResistanceFor(defender, attackCard.damageType);
+        int incomingDamage = Mathf.Max(0, attackCard.damage - defenderRes);
+
+        StartCoroutine(AnnounceText($"Player {attackerId} attacks Player {(attackerId == 1 ? 2 : 1)} with {attackCard.cardName} ({attackCard.damageType} {attackCard.damage}). Defender res {defenderRes} → net {incomingDamage} damage."));
+
+        // If this attack would kill defender, trigger last-stand
+        if (incomingDamage >= defender.hp && defender.hp > 0)
+        {
+            StartCoroutine(AnnounceText("Last Stand triggered!"));
+            HandleLastStand(attackCard, incomingDamage);
+            return;
+        }
+
+        // Normal apply
+        defender.hp = Mathf.Max(0, defender.hp - incomingDamage);
+        UpdatePanels();
+
+        // check for win
+        if (defender.hp <= 0)
+        {
+            // ensure defender hp is exactly 0 in the model and UI before defeat handling
+            defender.hp = 0;
+            UpdatePanels();
+            OnPlayerDefeated((attackerId == 1) ? 2 : 1);
+            return;
+        }
+
+
+        // continue to next turn (swap attacker/defender)
+        SwapTurns();
+    }
+
+    void HandleLastStand(CardData incomingAttack, int incomingDamage)
+    {
+        // Defender draws 1 attack card for last stand
+        CardData lastCard = deckManager.DrawAttackCard();
+        if (lastCard == null)
+        {
+            StartCoroutine(AnnounceText("Attack deck empty during last stand."));
+            // force defender to 0 HP, update UI, and trigger defeat
+            defender.hp = 0;
+            UpdatePanels();
+            OnPlayerDefeated((attackerId == 1) ? 2 : 1);
+            return;
+        }
+
+
+        StartCoroutine(AnnounceText($"Last Stand draw: {lastCard.cardName} ({lastCard.damageType} {lastCard.damage})"));
+
+        // compute if parry (same type and enough damage to cancel)
+        bool parry = (lastCard.damageType == incomingAttack.damageType) && (lastCard.damage >= incomingDamage);
+
+        // compute if abort (this lastCard, applied to attacker, would be finishing blow)
+        int attackerRes = GetResistanceFor(attacker, lastCard.damageType);
+        int damageToAttacker = Mathf.Max(0, lastCard.damage - attackerRes);
+        bool abort = damageToAttacker >= attacker.hp;
+
+        if (parry)
+        {
+            StartCoroutine(AnnounceText("Last Stand result: PARRY! Incoming attack nullified."));
+            deckManager.DiscardAttack(lastCard);
+            ClearCurrentAttackUIs();
+            UpdatePanels();
+
+            // attacker retains turn — make it explicit and re-enable draw
+            StartCoroutine(AnnounceText($"Player {attackerId} retains the turn (draw again)."));
+            drawAttacksButton.interactable = true;
+            return;
+        }
+
+        if (abort)
+        {
+            StartCoroutine(AnnounceText("Last Stand result: ABORT! Both attacks canceled."));
+            deckManager.DiscardAttack(lastCard);
+            ClearCurrentAttackUIs();
+            UpdatePanels();
+
+            // attacker retains turn — explicit
+            StartCoroutine(AnnounceText($"Player {attackerId} retains the turn (draw again)."));
+            drawAttacksButton.interactable = true;
+            return;
+        }
+
+        // last stand failed -> defender loses
+        StartCoroutine(AnnounceText("Last Stand failed; defender dies."));
+        deckManager.DiscardAttack(lastCard);
+        ClearCurrentAttackUIs();
+
+        // set defender hp to 0 explicitly and show it before handling defeat
+        defender.hp = 0;
+        UpdatePanels();
+
+        OnPlayerDefeated((attackerId == 1) ? 2 : 1);
+
+    }
+
+    int GetResistanceFor(PlayerRobot robot, DamageType type)
+    {
+        switch (type)
+        {
+            case DamageType.Thermal: return robot.thermal;
+            case DamageType.Freeze: return robot.freeze;
+            case DamageType.Electric: return robot.electric;
+            case DamageType.Void: return robot.voidRes;
+            case DamageType.Impact: return robot.impact;
+            default: return 0;
+        }
+    }
+
+    void SwapTurns()
+    {
+        // swap attacker/defender references and IDs
+        if (attackerId == 1)
+        {
+            attackerId = 2;
+            attacker = GameManager.Instance.player2Robot;
+            defender = GameManager.Instance.player1Robot;
+        }
+        else
+        {
+            attackerId = 1;
+            attacker = GameManager.Instance.player1Robot;
+            defender = GameManager.Instance.player2Robot;
+        }
+        StartCoroutine(AnnounceText($"Player {attackerId}, it's your turn — draw 2 attack cards."));
+
+        UpdateUIForTurn();
+    }
+
+    void UpdatePanels()
+    {
+        player1Panel.Setup(1, GameManager.Instance.player1Robot);
+        player2Panel.Setup(2, GameManager.Instance.player2Robot);
+    }
+
+    void OnPlayerDefeated(int defeatedPlayerId)
+    {
+        StartCoroutine(AnnounceText($"Player {defeatedPlayerId} defeated. Player {(defeatedPlayerId == 1 ? 2 : 1)} wins!"));
+
+        // disable draw
+        drawAttacksButton.interactable = false;
+        ClearCurrentAttackUIs();
+
+        UpdatePanels();
+
+        // TODO: show end-of-game UI, disable other controls, maybe return to splash later
+    }
+
+    void ClearCurrentAttackUIs()
+    {
+        foreach (var o in currentAttackUIs) Destroy(o);
+        currentAttackUIs.Clear();
+
+        // also clear drawnCardsPanel children (safety)
+        for (int i = drawnCardsPanel.childCount - 1; i >= 0; i--) Destroy(drawnCardsPanel.GetChild(i).gameObject);
     }
 }
