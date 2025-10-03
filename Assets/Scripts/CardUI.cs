@@ -5,12 +5,22 @@ using TMPro;
 
 public class CardUI : MonoBehaviour
 {
+    [Header("UI References")]
     public TMP_Text nameText;
     public TMP_Text slotOrTypeText;
     public TMP_Text statsText;
 
+    [Header("Art Layers")]
+    public Image baseImage;     // assign in prefab
+    public Image detailsImage;  // assign in prefab
+
     public void Setup(CardData data)
     {
+        // Set art
+        if (baseImage != null) baseImage.sprite = data.baseArt;
+        if (detailsImage != null) detailsImage.sprite = data.detailsArt;
+
+        // Name & type
         nameText.text = data.cardName;
 
         if (data.cardType == CardType.Armor)

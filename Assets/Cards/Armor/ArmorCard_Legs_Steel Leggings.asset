@@ -16,6 +16,8 @@ MonoBehaviour:
   armorSlot: 3
   damageType: 5
   cardName: Steel Leggings
+  baseArt: {fileID: 21300000, guid: 214024a2ef5966c488da9c0863b3b2b9, type: 3}
+  detailsArt: {fileID: 21300000, guid: dcc6951156442dc4a9572ad99921e9fb, type: 3}
   hp: 11
   thermal: 0
   freeze: 0

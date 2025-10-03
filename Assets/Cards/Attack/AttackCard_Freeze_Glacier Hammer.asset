@@ -16,6 +16,8 @@ MonoBehaviour:
   armorSlot: 4
   damageType: 1
   cardName: Glacier Hammer
+  baseArt: {fileID: 21300000, guid: 67aaa93af958dec41bba1ce1db1746f5, type: 3}
+  detailsArt: {fileID: 0}
   hp: 0
   thermal: 0
   freeze: 0

@@ -16,6 +16,8 @@ MonoBehaviour:
   armorSlot: 4
   damageType: 4
   cardName: Shockwave Slam
+  baseArt: {fileID: 21300000, guid: dfe0dc87bf54aa349902df4c42d75131, type: 3}
+  detailsArt: {fileID: 0}
   hp: 0
   thermal: 0
   freeze: 0

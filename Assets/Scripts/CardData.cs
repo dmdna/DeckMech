@@ -12,7 +12,15 @@ public class CardData : ScriptableObject
     public DamageType damageType;
 
     public string cardName;
-    public int hp; // For armor
+
+    // New sprite references
+    public Sprite baseArt;
+    public Sprite detailsArt;
+
+    // Armor stats
+    public int hp;
     public int thermal, freeze, electric, voidRes, impact;
-    public int damage; // For attack
+
+    // Attack stat
+    public int damage;
 }

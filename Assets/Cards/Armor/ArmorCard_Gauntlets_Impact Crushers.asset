@@ -16,6 +16,8 @@ MonoBehaviour:
   armorSlot: 2
   damageType: 5
   cardName: Impact Crushers
+  baseArt: {fileID: 21300000, guid: 004a4ab385fd9e142b4cd48888c8216b, type: 3}
+  detailsArt: {fileID: 21300000, guid: 353da07c77c522e4cb647290f44b9b1e, type: 3}
   hp: 7
   thermal: 0
   freeze: 0
