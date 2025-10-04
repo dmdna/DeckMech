@@ -17,7 +17,7 @@ MonoBehaviour:
   damageType: 2
   cardName: Thunderstrike
   baseArt: {fileID: 21300000, guid: 755be8b8cf8a7cf4bb1f0c90b4c434f1, type: 3}
-  detailsArt: {fileID: 0}
+  detailsArt: {fileID: 21300000, guid: 755be8b8cf8a7cf4bb1f0c90b4c434f1, type: 3}
   hp: 0
   thermal: 0
   freeze: 0

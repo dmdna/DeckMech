@@ -16,8 +16,8 @@ MonoBehaviour:
   armorSlot: 3
   damageType: 5
   cardName: Frostguard Greaves
-  baseArt: {fileID: 21300000, guid: 3f02d6a3fdcbcd7459a7e06235794f39, type: 3}
-  detailsArt: {fileID: 21300000, guid: 818fdc45cd7476b48b247acface23ac1, type: 3}
+  baseArt: {fileID: 21300000, guid: 40cdd2ce762084d438d316d5a579b2d1, type: 3}
+  detailsArt: {fileID: 21300000, guid: 2d60b2668bdecfe4a893a629c0b2f0ee, type: 3}
   hp: 9
   thermal: 0
   freeze: 6

@@ -16,8 +16,8 @@ MonoBehaviour:
   armorSlot: 1
   damageType: 5
   cardName: Balanced Chestplate
-  baseArt: {fileID: 21300000, guid: edcafa28c07f8e84ab782d2424bbe1b8, type: 3}
-  detailsArt: {fileID: 21300000, guid: d8fa8c78c34e58f47a43828f79fac569, type: 3}
+  baseArt: {fileID: 21300000, guid: f4430bc906731c94a9296ef435aed065, type: 3}
+  detailsArt: {fileID: 21300000, guid: 89ab5d95c9c6ad841a396e6baeb0be0c, type: 3}
   hp: 12
   thermal: 3
   freeze: 3

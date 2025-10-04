@@ -16,8 +16,8 @@ MonoBehaviour:
   armorSlot: 2
   damageType: 5
   cardName: Cryo Grips
-  baseArt: {fileID: 21300000, guid: b2f7d5ae6fa96fe41bf693610343db6b, type: 3}
-  detailsArt: {fileID: 21300000, guid: 353da07c77c522e4cb647290f44b9b1e, type: 3}
+  baseArt: {fileID: 21300000, guid: ac14036652d25bc4795536322d0aa5df, type: 3}
+  detailsArt: {fileID: 21300000, guid: 65f58df9f356381449a41e925e44a6f3, type: 3}
   hp: 8
   thermal: 0
   freeze: 6

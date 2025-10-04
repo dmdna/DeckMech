@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f66732773272ed443bb3496d2ec36f04, type: 3}
+  m_Name: ArmorCard_Helmet_Magnetic Helmet
+  m_EditorClassIdentifier: 
+  cardType: 0
+  armorSlot: 0
+  damageType: 5
+  cardName: Magnetic Helmet
+  baseArt: {fileID: 21300000, guid: c0682ed5e14001a4aac7b8d21942f012, type: 3}
+  detailsArt: {fileID: 21300000, guid: 4b2f71719bbd6284fb19afb358da893d, type: 3}
+  hp: 8
+  thermal: 0
+  freeze: 0
+  electric: 6
+  voidRes: 3
+  impact: 0
+  damage: 0

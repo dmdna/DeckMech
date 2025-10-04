@@ -17,7 +17,7 @@ MonoBehaviour:
   damageType: 3
   cardName: Shadow Cannon
   baseArt: {fileID: 21300000, guid: 0dea0075a59489749b17b11f395ba8ed, type: 3}
-  detailsArt: {fileID: 0}
+  detailsArt: {fileID: 21300000, guid: 0dea0075a59489749b17b11f395ba8ed, type: 3}
   hp: 0
   thermal: 0
   freeze: 0

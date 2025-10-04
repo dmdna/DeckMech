@@ -16,8 +16,8 @@ MonoBehaviour:
   armorSlot: 0
   damageType: 5
   cardName: Thermal Visor
-  baseArt: {fileID: 21300000, guid: dce95cf98545d6d49bcb0cfa954769df, type: 3}
-  detailsArt: {fileID: 21300000, guid: 6d15c0ab553f0494389fe74803ee3cfa, type: 3}
+  baseArt: {fileID: 21300000, guid: b0a6280926d294d4980f09a2cdc92698, type: 3}
+  detailsArt: {fileID: 21300000, guid: d99b785a1ecb8a64493e387e5ef22808, type: 3}
   hp: 8
   thermal: 9
   freeze: 0

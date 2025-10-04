@@ -17,7 +17,7 @@ MonoBehaviour:
   damageType: 0
   cardName: Plasma Ray
   baseArt: {fileID: 21300000, guid: 819c7cbbcd8e2dc4a81c5a6a9e975a01, type: 3}
-  detailsArt: {fileID: 0}
+  detailsArt: {fileID: 21300000, guid: 819c7cbbcd8e2dc4a81c5a6a9e975a01, type: 3}
   hp: 0
   thermal: 0
   freeze: 0

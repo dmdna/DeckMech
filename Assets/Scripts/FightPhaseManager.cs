@@ -17,7 +17,12 @@ public class FightPhaseManager : MonoBehaviour
     [Header("Fight UI")]
     public Button drawAttacksButton;           
     public Transform drawnCardsPanel;         
-    public GameObject attackCardUIPrefab;      
+    public GameObject attackCardUIPrefab;
+    
+    [Header("Robot Visuals")]
+    public RobotBuilder player1RobotBuilder;
+    public RobotBuilder player2RobotBuilder;
+
 
 
     // runtime
@@ -57,6 +62,9 @@ public class FightPhaseManager : MonoBehaviour
 
         // show announcement then init the fight turn order
         ShowAnnouncementAndStartFight();
+
+        player1RobotBuilder.BuildRobotFromData(p1, true);
+        player2RobotBuilder.BuildRobotFromData(p2, false);
     }
 
     void ShowAnnouncementAndStartFight()

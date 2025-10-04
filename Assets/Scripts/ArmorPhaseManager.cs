@@ -108,14 +108,17 @@ public class ArmorPhaseManager : MonoBehaviour
                     Button btn = card.GetComponent<Button>();
                     btn.onClick.RemoveAllListeners();
                     btn.onClick.AddListener(() => {
-                        // ✅ Only current player can pick
                         if (turnManager.IsPlayerDone(turnManager.CurrentPlayer)) return;
                         MarkSelected(holder);
                     });
                 }
             }
         }
+
+        // if all slots auto-selected, immediately finalize
+        TryFinalizeRobot();
     }
+
 
 
     void AutoSelect(CardHolder holder)
@@ -158,36 +161,34 @@ public class ArmorPhaseManager : MonoBehaviour
 
         PlayerRobot robot = new PlayerRobot(playerId);
 
-        // Collect stats from selected pieces
-        foreach (Transform column in hangarColumns)
-        {
-            foreach (Transform card in column)
-            {
-                CardHolder holder = card.GetComponent<CardHolder>();
-                if (holder.selected)
-                {
-                    CardData piece = holder.cardData;
-                    robot.hp += piece.hp;
-                    robot.thermal += piece.thermal;
-                    robot.freeze += piece.freeze;
-                    robot.electric += piece.electric;
-                    robot.voidRes += piece.voidRes;
-                    robot.impact += piece.impact;
+        // Get selected armor cards from each column
+        CardHolder helmet = GetSelectedInColumn(0);
+        CardHolder chest = GetSelectedInColumn(1);
+        CardHolder gauntlet = GetSelectedInColumn(2);
+        CardHolder legs = GetSelectedInColumn(3);
 
-                    // Remove chosen armor from Hangar
-                    Destroy(card.gameObject);
-                    break;
-                }
-            }
-        }
+        robot.helmetCard = helmet ? helmet.cardData : null;
+        robot.chestCard = chest ? chest.cardData : null;
+        robot.gauntletCard = gauntlet ? gauntlet.cardData : null;
+        robot.legCard = legs ? legs.cardData : null;
 
-        Debug.Log($"Player {playerId} built Robot! HP:{robot.hp} | T:{robot.thermal} | F:{robot.freeze} | E:{robot.electric} | V:{robot.voidRes} | I:{robot.impact}");
+        // compute stats
+        robot.RecalculateStats();
 
+        Debug.Log($"✅ {robot.ToDebugString()}");
+
+        // remove chosen armor from hangar
+        if (helmet) Destroy(helmet.gameObject);
+        if (chest) Destroy(chest.gameObject);
+        if (gauntlet) Destroy(gauntlet.gameObject);
+        if (legs) Destroy(legs.gameObject);
+
+        // save robot globally
         GameManager.Instance.SaveRobot(robot);
         turnManager.MarkPlayerDone(playerId);
-
         selectingArmorSet = false;
 
+        // move to next phase
         if (turnManager.BothPlayersDone())
         {
             Debug.Log("Both robots ready, switch to Fight Phase!");
@@ -200,6 +201,20 @@ public class ArmorPhaseManager : MonoBehaviour
             drawButton.interactable = true;
         }
     }
+
+    // helper to get selected card in a column
+    CardHolder GetSelectedInColumn(int columnIndex)
+    {
+        Transform column = hangarColumns[columnIndex];
+        foreach (Transform child in column)
+        {
+            CardHolder ch = child.GetComponent<CardHolder>();
+            if (ch != null && ch.selected)
+                return ch;
+        }
+        return null;
+    }
+
 
     bool HangarComplete()
     {

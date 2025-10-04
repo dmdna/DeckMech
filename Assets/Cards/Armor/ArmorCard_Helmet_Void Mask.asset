@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f66732773272ed443bb3496d2ec36f04, type: 3}
+  m_Name: ArmorCard_Helmet_Void Mask
+  m_EditorClassIdentifier: 
+  cardType: 0
+  armorSlot: 0
+  damageType: 5
+  cardName: Void Mask
+  baseArt: {fileID: 21300000, guid: cc7f663e70b8f5f46b6146b29d16e69a, type: 3}
+  detailsArt: {fileID: 21300000, guid: 4b2f71719bbd6284fb19afb358da893d, type: 3}
+  hp: 7
+  thermal: 0
+  freeze: 0
+  electric: 0
+  voidRes: 9
+  impact: 0
+  damage: 0

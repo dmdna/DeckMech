@@ -16,8 +16,8 @@ MonoBehaviour:
   armorSlot: 0
   damageType: 5
   cardName: Static Helm
-  baseArt: {fileID: 21300000, guid: 469712c227aad3b4d9d72794bba20ab5, type: 3}
-  detailsArt: {fileID: 21300000, guid: 4532bdb69ece2fa49ac66a457a826b19, type: 3}
+  baseArt: {fileID: 21300000, guid: c0682ed5e14001a4aac7b8d21942f012, type: 3}
+  detailsArt: {fileID: 21300000, guid: 1b9fc840796a94f459924b551b8d6631, type: 3}
   hp: 9
   thermal: 0
   freeze: 0
