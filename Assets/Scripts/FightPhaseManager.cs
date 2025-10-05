@@ -13,6 +13,8 @@ public class FightPhaseManager : MonoBehaviour
     public GameObject announcementTextPrefab;     
     public PlayerRobotPanel player1Panel;      
     public PlayerRobotPanel player2Panel;      
+    public GameObject player1TurnText;      
+    public GameObject player2TurnText;      
 
     [Header("Fight UI")]
     public Button drawAttacksButton;           
@@ -21,7 +23,9 @@ public class FightPhaseManager : MonoBehaviour
     
     [Header("Robot Visuals")]
     public RobotBuilder player1RobotBuilder;
+    public Animator player1Anim;
     public RobotBuilder player2RobotBuilder;
+    public Animator player2Anim;
 
 
 
@@ -79,10 +83,14 @@ public class FightPhaseManager : MonoBehaviour
         if (p1.hp <= p2.hp)
         {
             attacker = p1; defender = p2; attackerId = 1;
+            player1TurnText.SetActive(true);
+            player2TurnText.SetActive(false);
         }
         else
         {
             attacker = p2; defender = p1; attackerId = 2;
+            player1TurnText.SetActive(false);
+            player2TurnText.SetActive(true);
         }
         StartCoroutine(AnnounceText($"Player {attackerId} (lowest HP) starts as attacker. Please draw your attack card."));
 
@@ -97,7 +105,7 @@ public class FightPhaseManager : MonoBehaviour
         TMP_Text announcement =  Instantiate(announcementTextPrefab, announcementTextContainer).GetComponent<TMP_Text>();
         announcement.text = txt;
         Debug.Log(txt);
-        yield return new WaitForSeconds(8);
+        yield return new WaitForSeconds(10);
         Destroy(announcement.gameObject);
         yield return null;
     }
@@ -185,6 +193,9 @@ public class FightPhaseManager : MonoBehaviour
         defender.hp = Mathf.Max(0, defender.hp - incomingDamage);
         UpdatePanels();
 
+
+        if (attackerId == 1) { player1Anim.SetTrigger("Attack"); } else { player2Anim.SetTrigger("Attack"); }
+
         // check for win
         if (defender.hp <= 0)
         {
@@ -193,6 +204,16 @@ public class FightPhaseManager : MonoBehaviour
             UpdatePanels();
             OnPlayerDefeated((attackerId == 1) ? 2 : 1);
             return;
+        }
+        else
+        {
+            if (attackerId == 1) {
+                player2Anim.SetTrigger("Hit"); 
+            }
+            else 
+            { 
+                player1Anim.SetTrigger("Hit");
+            }
         }
 
 
@@ -285,12 +306,16 @@ public class FightPhaseManager : MonoBehaviour
             attackerId = 2;
             attacker = GameManager.Instance.player2Robot;
             defender = GameManager.Instance.player1Robot;
+            player1TurnText.SetActive(false);
+            player2TurnText.SetActive(true);
         }
         else
         {
             attackerId = 1;
             attacker = GameManager.Instance.player1Robot;
             defender = GameManager.Instance.player2Robot;
+            player1TurnText.SetActive(true);
+            player2TurnText.SetActive(false);
         }
         StartCoroutine(AnnounceText($"Player {attackerId}, it's your turn — draw 2 attack cards."));
 
@@ -313,7 +338,28 @@ public class FightPhaseManager : MonoBehaviour
 
         UpdatePanels();
 
-        // TODO: show end-of-game UI, disable other controls, maybe return to splash later
+        player1TurnText.GetComponent<TMP_Text>().text = "You Win!";
+        player2TurnText.GetComponent<TMP_Text>().text = "You Win!";
+
+        if (defeatedPlayerId == 1)
+        {
+            player1TurnText.SetActive(false);
+            player2TurnText.SetActive(true);
+        } 
+        else
+        {
+            player1TurnText.SetActive(true);
+            player2TurnText.SetActive(false);
+        }
+
+        if (defeatedPlayerId == 1) 
+        {
+            player1Anim.SetBool("Dead", true); 
+        }
+        else 
+        { 
+            player2Anim.SetBool("Dead", true);
+        }
     }
 
     void ClearCurrentAttackUIs()
