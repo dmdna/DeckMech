@@ -51,6 +51,8 @@ public class ArmorPhaseManager : MonoBehaviour
     // --- PICK ---
     void PickCard(CardHolder chosenHolder)
     {
+        SFXManager.Instance.PlaySFX(2);
+
         CardData chosen = chosenHolder.cardData;
 
         // Add to hangar
@@ -156,6 +158,8 @@ public class ArmorPhaseManager : MonoBehaviour
 
     void AssembleRobot()
     {
+        SFXManager.Instance.PlaySFX(5);
+
         int playerId = turnManager.CurrentPlayer;
         if (turnManager.IsPlayerDone(playerId)) return; // prevent double build
 

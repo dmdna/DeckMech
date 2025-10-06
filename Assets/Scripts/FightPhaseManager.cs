@@ -167,6 +167,9 @@ public class FightPhaseManager : MonoBehaviour
         }
         currentAttackUIs.Clear();
 
+
+        SFXManager.Instance.PlaySFX(3);
+
         // Apply attack to defender (with last-stand check)
         ApplyAttackWithLastStand(attackCard);
         // After resolution, discard the used attack card as well (if not used in last-stand)
@@ -360,6 +363,8 @@ public class FightPhaseManager : MonoBehaviour
         { 
             player2Anim.SetBool("Dead", true);
         }
+
+        SFXManager.Instance.PlaySFX(4);
     }
 
     void ClearCurrentAttackUIs()
