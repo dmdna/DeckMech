@@ -16,8 +16,8 @@ MonoBehaviour:
   armorSlot: 3
   damageType: 5
   cardName: Balanced Greaves
-  baseArt: {fileID: 21300000, guid: 5d52a4adf68de324b9affebbfa659fce, type: 3}
-  detailsArt: {fileID: 21300000, guid: b44f21f08cd796749a69dc45b39f41c1, type: 3}
+  baseArt: {fileID: 1269059567369984857, guid: 41a996b289fe1d543935c339a13173e9, type: 3}
+  detailsArt: {fileID: 1269059567369984857, guid: 41a996b289fe1d543935c339a13173e9, type: 3}
   hp: 9
   thermal: 3
   freeze: 3

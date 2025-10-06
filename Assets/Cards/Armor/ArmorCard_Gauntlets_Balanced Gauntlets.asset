@@ -16,8 +16,8 @@ MonoBehaviour:
   armorSlot: 2
   damageType: 5
   cardName: Balanced Gauntlets
-  baseArt: {fileID: 21300000, guid: 00918645b32b1d741b53e7cd48ebab6d, type: 3}
-  detailsArt: {fileID: 21300000, guid: 65f58df9f356381449a41e925e44a6f3, type: 3}
+  baseArt: {fileID: -5908058110463614725, guid: 7a215c76bdf2865449e2d3040877495f, type: 3}
+  detailsArt: {fileID: -5908058110463614725, guid: 7a215c76bdf2865449e2d3040877495f, type: 3}
   hp: 9
   thermal: 2
   freeze: 2

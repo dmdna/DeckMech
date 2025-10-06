@@ -16,8 +16,8 @@ MonoBehaviour:
   armorSlot: 0
   damageType: 5
   cardName: Balanced Helmet
-  baseArt: {fileID: 21300000, guid: c0682ed5e14001a4aac7b8d21942f012, type: 3}
-  detailsArt: {fileID: 21300000, guid: d99b785a1ecb8a64493e387e5ef22808, type: 3}
+  baseArt: {fileID: 4264532797205910883, guid: a4fb6bbb6156e3f419d069562899bfa0, type: 3}
+  detailsArt: {fileID: 4264532797205910883, guid: a4fb6bbb6156e3f419d069562899bfa0, type: 3}
   hp: 8
   thermal: 3
   freeze: 3
