@@ -8,7 +8,7 @@ Deck Mech is a deckbuilding game where players will build their desired armor an
 
 ## Player Interactivity
 
-We have opted to play Deck Mech with a **point-and-click** playstyle. We felt that this option was the most player-friendly since the gameplay mostly revolves around players choosing cards rather than placing them anywhere specific on the play area.
+We have opted to play Deck Mech with a **point-and-click** playstyle. We felt that this option was the most player-friendly since the gameplay mostly revolves around players choosing cards rather than placing them anywhere specific on the play area. A single mouse is used to control both players. The game will instruct which player should be in control of the mouse at all times.
 
 ## Game Rules
 
