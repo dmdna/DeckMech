@@ -62,4 +62,7 @@ All of our cards are permanently stored in the game as our own custom class `Car
 
 All of our card sprites were created by us. The images contain both original works and transformations of free-licenced community images from https://www.pixilart.com.
 
-[background image sources to be added]
+Our background images were obtained from Pixabay, all of which have free licenses:
+* Main Menu image (Mech): https://pixabay.com/photos/model-toys-robot-science-fiction-947924
+* Armor Phase image (Hangar): https://pixabay.com/illustrations/science-fiction-hangar-technology-4255632
+* Fight Phase image (Watery landscape): https://pixabay.com/photos/water-nature-sun-sea-ocean-tech-3101241
