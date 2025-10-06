@@ -54,8 +54,12 @@ If a final blow cannot be parried or aborted by the last stand, the final attack
 
 ## Item Storage
 
-[to be added]
+As previously mentioned, the Deck Mech player experience revolves around choosing cards rather than manipulating them around the play area. Therefore, we opted to keep our game lightweight by creating all of our in-game card objects *as they are drawn from the deck*.
+
+All of our cards are permanently stored in the game as our own custom class `CardData`, which is an asset that is cloned once per card and is more lightweight than storing dozens of GameObject prefabs. The `CardData` assets are added as inputs to the `GameManager` script's `DeckManager` component. The `DeckManager` stores all the cards in different **queues** of `CardData`, which simulate our card decks separately. We also added a function in this script to shuffle any given deck and it is called as needed. Our `ArmorPhaseManager` and `FightPhaseManager` scripts handle the card draws and selections that our players make. Only when a card is drawn (dequeued) is when the actual in-game card is instantiated by the phase manager as a `CardUI` GameObject, whose data is populated into an `ArmorCardPrefab` or `AttackCardPefab`, depending on the card type. This object is later destroyed when the card is discarded, while the corresponding `CardData` is added to its appropriate discard "deck" (another queue). This item storage method ensures that when a card is taken off-screen, it only exists as lightweight data assets and not GameObjects.
 
 ## Resources
 
 All of our card sprites were created by us. The images contain both original works and transformations of free-licenced community images from https://www.pixilart.com.
+
+[background image sources to be added]
