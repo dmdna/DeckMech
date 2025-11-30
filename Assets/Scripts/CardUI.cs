@@ -80,6 +80,7 @@ public class CardUI : MonoBehaviour
 
         iconImage.sprite = icon;
         valueText.text = value.ToString();
+        valueText.fontSize = 30;
 
         Debug.Log("Added stat: " + value);
     }

@@ -53,6 +53,7 @@ public class PlayerRobotPanel : MonoBehaviour
         if (value <= 0) return;
 
         GameObject item = Instantiate(statItemPrefab, statsContainer);
+        item.GetComponent<RectTransform>().localScale *= 2f;
         Image iconImage = item.transform.Find("Icon").GetComponent<Image>();
         TMP_Text valueText = item.transform.Find("Value").GetComponent<TMP_Text>();
 
